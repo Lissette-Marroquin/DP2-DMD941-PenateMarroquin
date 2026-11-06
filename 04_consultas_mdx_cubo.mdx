@@ -1,0 +1,20 @@
+-- =========================================================
+-- Script 04: Consultas MDX para probar el cubo
+-- (SSMS > Conectar > Analysis Services > localhost > Nueva consulta MDX)
+-- =========================================================
+
+-- Ventas y unidades por año
+SELECT { [Measures].[Sales Amount], [Measures].[Order Quantity] } ON COLUMNS,
+       [Order Date].[Calendar Year].[Calendar Year].MEMBERS ON ROWS
+FROM [Cubo Ventas Internet];
+
+-- Ventas por categoría de producto
+SELECT [Measures].[Sales Amount] ON COLUMNS,
+       [Dim Product].[English Product Category Name].[English Product Category Name].MEMBERS ON ROWS
+FROM [Cubo Ventas Internet];
+
+-- Ventas por país
+SELECT [Measures].[Sales Amount] ON COLUMNS,
+       ORDER([Dim Sales Territory].[Sales Territory Country].[Sales Territory Country].MEMBERS,
+             [Measures].[Sales Amount], BDESC) ON ROWS
+FROM [Cubo Ventas Internet];
